@@ -147,6 +147,14 @@ const km: Record<string, string> = {
     "មេឌៀឯកជន ឬដែលមានការការពារ អាចមើលជាមុនបានប៉ុណ្ណោះ។ ដែនកំណត់នាំចេញអាស្រ័យលើសមត្ថភាពម៉ាស៊ីនមេ។",
   "TikTok did not supply an eligible publisher download rendition.":
     "TikTok មិនបានផ្ដល់ទម្រង់ទាញយកដែលម្ចាស់អនុញ្ញាតទេ។",
+  "The provider requires a human verification check for this server.":
+    "ប្រភពតម្រូវឱ្យផ្ទៀងផ្ទាត់ថាជាមនុស្សសម្រាប់ម៉ាស៊ីនមេនេះ។",
+  "The provider rate-limited this server (HTTP 429).":
+    "ប្រភពបានកំណត់ចំនួនសំណើពីម៉ាស៊ីនមេនេះ (HTTP 429)។",
+  "The provider denied this server access to the media (HTTP 403).":
+    "ប្រភពបានបដិសេធសំណើចូលប្រើមេឌៀពីម៉ាស៊ីនមេនេះ (HTTP 403)។",
+  "The provider restricts this media in the server's region.":
+    "ប្រភពបានកម្រិតមេឌៀនេះក្នុងតំបន់របស់ម៉ាស៊ីនមេ។",
   "The provider restricted access from this server.":
     "ប្រភពបានដាក់កម្រិតការចូលពីម៉ាស៊ីនមេនេះ។",
   "This provider supplies preview metadata. A permitted download integration is unavailable.":

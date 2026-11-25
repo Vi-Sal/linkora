@@ -83,25 +83,50 @@ export async function native(
       signal.removeEventListener("abort", cancel);
       if (abort) return reject(abort);
       if (code !== 0) {
-        console.warn(
-          JSON.stringify({
-            event: "native_exit",
-            tool: path.basename(bin),
-            exit: code,
-          }),
-        );
         let reason = "The provider could not supply a usable media stream.",
           key = "EXTRACTION_FAILED";
+        // yt-dlp can emit unrelated warnings before the terminal error.
+        const terminalError =
+          stderr
+            .split(/\r?\n/)
+            .filter((line) => /^ERROR:/i.test(line))
+            .at(-1) || stderr;
         if (
+          bin === binaries.python &&
+          /confirm.{0,30}(?:not a bot|human)|captcha/i.test(terminalError)
+        ) {
+          key = "PLATFORM_RESTRICTED";
+          reason =
+            "The provider requires a human verification check for this server.";
+        } else if (
+          bin === binaries.python &&
+          /HTTP Error 429|Too Many Requests/i.test(terminalError)
+        ) {
+          key = "PLATFORM_RESTRICTED";
+          reason = "The provider rate-limited this server (HTTP 429).";
+        } else if (
+          bin === binaries.python &&
+          /HTTP Error 403|403 Forbidden/i.test(terminalError)
+        ) {
+          key = "PLATFORM_RESTRICTED";
+          reason =
+            "The provider denied this server access to the media (HTTP 403).";
+        } else if (
+          bin === binaries.python &&
+          /not available in your country|geo.restricted/i.test(terminalError)
+        ) {
+          key = "PLATFORM_RESTRICTED";
+          reason = "The provider restricts this media in the server's region.";
+        } else if (
           /private video|members.only|login required|sign in to view/i.test(
-            stderr,
+            terminalError,
           )
         ) {
           key = "PRIVATE_MEDIA";
           reason = "The provider requires an account or private access.";
         } else if (
           /bot|captcha|403|429|blocked|challenge|not available in your country/i.test(
-            stderr,
+            terminalError,
           )
         ) {
           key = "PLATFORM_RESTRICTED";
@@ -122,6 +147,15 @@ export async function native(
           reason =
             "FFmpeg could not process this media with the selected settings.";
         }
+        console.warn(
+          JSON.stringify({
+            event: "native_exit",
+            tool: path.basename(bin),
+            exit: code,
+            key,
+            reason,
+          }),
+        );
         return reject(new Problem(key, reason));
       }
       if (pending) opts.line?.(pending);
