@@ -22,7 +22,7 @@ The image includes Node.js, Python, yt-dlp, FFmpeg and FFprobe. The application 
 | --- | --- |
 | YouTube | Single videos, Shorts, mobile, music and short URLs normalize to a video ID. Playlist/radio tracking parameters are discarded. Export requires accessible, unprotected media tracks within server limits. Only export media you are authorized to process. Other public videos can return an oEmbed preview and the reason export is unavailable. |
 | TikTok | Accepts canonical posts and supported short URLs. The post must explicitly enable downloads and supply a downloadable publisher rendition. Playback-only renditions cannot qualify. The extractor and public page can differ by post and hosting region. |
-| Approved media URLs | Accepts public HTTPS files on exact hostnames in `DIRECT_MEDIA_HOSTS`. Provide only hosts and media authorized for this use. Linkora retrieves and probes the actual file on analysis. Try the [W3C-hosted Big Buck Bunny trailer](https://media.w3.org/2010/05/bunny/trailer.mp4). |
+| Direct media URLs | Accepts public HTTPS media files without a hostname allowlist. Use media you are authorized to process. Linkora retrieves and probes the actual file on analysis. Try the [W3C-hosted Big Buck Bunny trailer](https://media.w3.org/2010/05/bunny/trailer.mp4). |
 | Local media | Upload through the file workflow to analyze streams, dimensions and duration. No external media provider is involved. |
 | Vimeo and SoundCloud | Public embed metadata when available. Export is unavailable through these adapters. |
 
@@ -72,7 +72,7 @@ See [.env.example](.env.example) for every default. Set values in the server env
 | `MAX_CONCURRENT_JOBS`, `MAX_QUEUE_SIZE`, `MAX_JOBS_PER_SESSION` | 1 active worker, 5 waiting, 1 outstanding job per session |
 | `JOB_TIMEOUT_SECONDS`, `FILE_TTL_SECONDS`, `CLEANUP_INTERVAL_SECONDS` | 300 seconds per job, 900 seconds retention, 60 seconds between sweeps |
 | `ENABLE_LOCAL_UPLOADS`, `ENABLE_HEAVY_TRANSCODING` | Enabled; disable heavy conversion to conserve CPU |
-| `ENABLE_DIRECT_URL_EXPORT`, `DIRECT_MEDIA_HOSTS` | Enabled for media.w3.org and interactive-examples.mdn.mozilla.net by default |
+| `ENABLE_DIRECT_URL_EXPORT` | Enabled for public HTTPS media files by default |
 | `ENABLE_BATCH_EXPORT`, `MAX_BATCH_SIZE` | Disabled, maximum 3 by default |
 | `PYTHON_BIN`, `FFMPEG_BIN`, `FFPROBE_BIN` | Optional explicit executable paths |
 
@@ -124,7 +124,7 @@ The native and Docker HTTP tests covered session isolation, reconnecting progres
 
 1. Push the repository, including the lockfile and render.yaml, to a GitHub repository accessible to your Render account.
 2. Create a Blueprint in Render, select the repository and apply its Docker web service configuration on main. Enter the Telegram settings in the Render dashboard to enable alerts. Use a fresh bot token issued by BotFather.
-3. Keep one instance, configure any operator-approved sources and set SITE_URL to the public HTTPS origin. Render provides PORT. No persistent disk is needed.
+3. Keep one instance, set SITE_URL to the public HTTPS origin. Render provides PORT. No persistent disk is needed.
 4. Check /api/v1/health and run an authorized MP4 and MP3 download through the deployed origin. Confirm progress and file validity from that region before advertising platform-specific support.
 
 Render restarts and idle shutdowns lose in-memory jobs and temporary files. Multiple replicas cannot share sessions, queue state or downloads. CPU limits and provider restrictions on hosting IPs can affect individual jobs.

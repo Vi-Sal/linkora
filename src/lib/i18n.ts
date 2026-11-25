@@ -122,8 +122,8 @@ const km: Record<string, string> = {
   "Batch export is disabled on this server.":
     "ការនាំចេញជាក្រុមត្រូវបានបិទលើម៉ាស៊ីនមេនេះ។",
   "Which links can I export?": "តើតំណណាខ្លះអាចនាំចេញបាន?",
-  "Linkora supports approved direct files, publisher-enabled TikTok downloads, and individually authorized YouTube videos. Availability depends on the source and the server network.":
-    "Linkora គាំទ្រឯកសារផ្ទាល់ដែលបានអនុញ្ញាត ការទាញយក TikTok ដែលម្ចាស់បើកឱ្យប្រើ និងវីដេអូ YouTube ដែលទទួលការអនុញ្ញាតដាច់ដោយឡែក។ ភាពអាចប្រើបានអាស្រ័យលើប្រភព និងបណ្តាញម៉ាស៊ីនមេ។",
+  "Linkora supports public HTTPS media files, publisher-enabled TikTok downloads, and accessible YouTube videos. Availability depends on the source and the server network.":
+    "Linkora គាំទ្រឯកសារមេឌៀ HTTPS សាធារណៈ ការទាញយក TikTok ដែលម្ចាស់បើកឱ្យប្រើ និងវីដេអូ YouTube ដែលអាចចូលប្រើបាន។ ភាពអាចប្រើបានអាស្រ័យលើប្រភព និងបណ្តាញម៉ាស៊ីនមេ។",
   "How does an export work?": "តើការនាំចេញដំណើរការយ៉ាងដូចម្តេច?",
   "Analyze a link or choose a file, select an available format, then export. Progress comes from the media engine.":
     "វិភាគតំណ ឬជ្រើសឯកសារ។ បន្ទាប់មកជ្រើសទម្រង់ដែលមាន ហើយនាំចេញ។ វឌ្ឍនភាពបង្ហាញតាមការដំណើរការជាក់ស្តែង។",
@@ -153,8 +153,6 @@ const km: Record<string, string> = {
     "ប្រភពនេះផ្ដល់តែព័ត៌មានមើលជាមុន។ មុខងារទាញយកដែលបានអនុញ្ញាតមិនទាន់មានទេ។",
   "The provider requires an account or private access.":
     "ប្រភពតម្រូវឱ្យមានគណនី ឬសិទ្ធិចូលជាឯកជន។",
-  "This host is outside the approved media sources.":
-    "គេហទំព័រនេះមិនស្ថិតក្នុងបញ្ជីប្រភពមេឌៀដែលអនុញ្ញាតទេ។",
   "Enter a complete HTTPS media URL.": "បញ្ចូលតំណមេឌៀ HTTPS ពេញលេញ។",
   "Use a single YouTube video or Shorts URL.":
     "ប្រើតំណវីដេអូ YouTube ឬ Shorts តែមួយ។",

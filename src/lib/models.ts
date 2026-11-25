@@ -71,7 +71,6 @@ export type Limits = {
   uploads: boolean;
   heavy: boolean;
   direct: boolean;
-  directHosts: string[];
 };
 export const terminal = (s: Stage) =>
   ["COMPLETED", "CANCELLED", "FAILED", "EXPIRED"].includes(s);

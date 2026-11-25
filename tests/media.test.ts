@@ -32,11 +32,15 @@ test("recognize TikTok and limit redirect entry points", () => {
   );
   assert.throws(() => normalize("https://vm.tiktok.com/unrelated/path"));
 });
-test("reject unapproved destinations, credentials, ports and private address ranges", () => {
+test("accept direct media from public hosts and reject unsafe URL inputs", () => {
+  assert.deepEqual(normalize("https://www.example.org/movie.mp4"), {
+    platform: "Direct link",
+    url: "https://www.example.org/movie.mp4",
+  });
   for (const u of [
     "file:///tmp/song",
     "http://localhost/",
-    "https://www.youtube.com.example.org/watch?v=yMINha31-uw",
+    "https://[::1]/movie.mp4",
     "https://name:pass@media.w3.org/media",
     "https://media.w3.org:8888/media",
     "https://youtube.com/playlist?list=123",

@@ -5,7 +5,7 @@ import { networks } from "./urls";
 import type { JobView } from "../models";
 export async function downloadTrack(
   f: { url: string; ext: string; http_headers?: Record<string, string> },
-  platform: "YouTube" | "TikTok" | "Direct link",
+  platform: "YouTube" | "TikTok",
   file: string,
   signal: AbortSignal,
   progress: (p: Partial<JobView>) => void,
@@ -44,10 +44,9 @@ export async function downloadTrack(
       "--output",
       file,
     ],
-    platform === "Direct link" ? limits.directHosts : networks[platform],
+    networks[platform],
     signal,
     {
-      exactHosts: platform === "Direct link",
       input: JSON.stringify(data),
       line: (l) => {
         if (!l.startsWith("LINKORA ")) return;

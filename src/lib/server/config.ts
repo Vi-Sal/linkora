@@ -20,13 +20,6 @@ export const limits: Limits = {
   batch: flag("ENABLE_BATCH_EXPORT", false),
   batchSize: number("MAX_BATCH_SIZE", 3),
   direct: flag("ENABLE_DIRECT_URL_EXPORT", true),
-  directHosts: (
-    process.env.DIRECT_MEDIA_HOSTS ??
-    "media.w3.org,interactive-examples.mdn.mozilla.net"
-  )
-    .split(",")
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean),
 };
 export const config = {
   root: path.resolve(process.env.TEMP_DIR || "/tmp/linkora", "work-v1"),

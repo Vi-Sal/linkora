@@ -181,7 +181,6 @@ async function handle(req: NextRequest, ctx: Context) {
         {
           name: "Direct link",
           export: limits.direct,
-          hosts: limits.directHosts,
         },
         { name: "Local file", export: limits.uploads },
       ]);

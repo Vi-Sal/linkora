@@ -1,5 +1,7 @@
 import path from "node:path";
-import { downloadTrack } from "../retrieve";
+import { limits } from "../config";
+import { storeStream } from "../storage";
+import { requestPublic } from "../urls";
 import { fromProbe, probe } from "../media";
 import type { Source } from "../providers";
 export async function directMedia(
@@ -10,15 +12,21 @@ export async function directMedia(
 ): Promise<Source> {
   const platform = "Direct link";
   const file = path.join(dir, "source");
-  await downloadTrack({ url, ext: "bin" }, platform, file, signal, () => {});
+  const { response } = await requestPublic(url, null, signal);
+  await storeStream(response, file, limits.maxFile, signal);
+  const filename = new URL(url).pathname.split("/").pop() || "Media";
+  let title = filename;
+  try {
+    title = decodeURIComponent(filename);
+  } catch {
+    // Keep the original filename when it contains invalid percent escapes.
+  }
   return {
     file,
     media: {
       ...fromProbe(await probe(file, signal), {
         id,
-        title: decodeURIComponent(
-          new URL(url).pathname.split("/").pop() || "Media",
-        ),
+        title,
         platform,
       }),
       page: url,

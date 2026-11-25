@@ -114,16 +114,17 @@ export function normalize(value: string): {
       platform: h.includes("vimeo") ? "Vimeo" : "SoundCloud",
       url: u.href,
     };
-  if (!limits.directHosts.includes(h))
-    throw new Problem(
-      "UNSUPPORTED_PLATFORM",
-      "This host is outside the approved media sources.",
-      400,
-    );
   if (!limits.direct)
     throw new Problem(
       "EXPORT_DISABLED",
       "Direct media URL processing is disabled on this server.",
+    );
+  const address = h.replace(/^\[|\]$/g, "");
+  if (ipaddr.isValid(address) && !publicIP(address))
+    throw new Problem(
+      "INVALID_URL",
+      "Only public media hosts are supported.",
+      400,
     );
   return { platform: "Direct link", url: u.href };
 }
@@ -136,25 +137,26 @@ export function publicIP(ip: string) {
 }
 export async function requestPublic(
   url: string,
-  hosts: string[],
+  hosts: readonly string[] | null,
   signal: AbortSignal,
   redirects = 4,
   headers: Record<string, string> = {},
 ) {
   const u = urlOf(url);
-  if (!hosts.includes(u.hostname))
+  if (hosts && !hosts.includes(u.hostname))
     throw new Problem(
       "INVALID_URL",
       "The destination is outside the approved hosts.",
       400,
     );
-  const ips = await lookup(u.hostname, { all: true });
+  const ips = await lookup(u.hostname.replace(/^\[|\]$/g, ""), { all: true });
   if (!ips.length || ips.some((a) => !publicIP(a.address)))
     throw new Problem(
       "INVALID_URL",
       "Only public media hosts are supported.",
       400,
     );
+  signal.throwIfAborted();
   const address = ips.find((a) => a.family === 4) || ips[0];
   const response = await new Promise<import("node:http").IncomingMessage>(
     (resolve, reject) => {

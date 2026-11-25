@@ -91,7 +91,7 @@ export const infoPages: Record<
     sections: [
       [
         "Which links can I export?",
-        "Linkora supports approved direct files, publisher-enabled TikTok downloads, and individually authorized YouTube videos. Availability depends on the source and the server network.",
+        "Linkora supports public HTTPS media files, publisher-enabled TikTok downloads, and accessible YouTube videos. Availability depends on the source and the server network.",
       ],
       [
         "How does an export work?",
