@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: linkora
+    runtime: docker
+    branch: main
+    autoDeployTrigger: commit
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: MAX_CONCURRENT_JOBS
+        value: "1"
+      - key: ENABLE_BATCH_EXPORT
+        value: "false"
+      - key: DIRECT_MEDIA_HOSTS
+        value: media.w3.org,interactive-examples.mdn.mozilla.net

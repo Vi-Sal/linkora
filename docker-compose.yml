@@ -1,0 +1,9 @@
+services:
+  linkora:
+    build: .
+    ports: ["127.0.0.1:10000:10000"]
+    tmpfs:
+      - /tmp/linkora:size=536870912,mode=1777
+    environment:
+      AUTHORIZED_YOUTUBE_IDS: ${AUTHORIZED_YOUTUBE_IDS:-}
+      PORT: "10000"
