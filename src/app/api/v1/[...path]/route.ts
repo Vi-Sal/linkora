@@ -171,7 +171,7 @@ async function handle(req: NextRequest, ctx: Context) {
         {
           name: "YouTube",
           preview: true,
-          export: "operator-authorized video IDs with permitted streams",
+          export: "accessible, unprotected streams within server limits",
         },
         {
           name: "TikTok",

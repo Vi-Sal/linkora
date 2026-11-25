@@ -30,7 +30,6 @@ async function permitsTikTokDownload(url: string, signal: AbortSignal) {
 
 export const tiktok: PlatformProvider = {
   name: "TikTok",
-  authorization: () => undefined,
   acceptsRendition: (id) => /^download(?:_addr)?(?:-\d+)?$/.test(id),
   async downloadRestriction(url, signal) {
     return (await permitsTikTokDownload(url, signal).catch(() => false))

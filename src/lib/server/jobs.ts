@@ -5,6 +5,7 @@ import { constants } from "node:fs";
 import path from "node:path";
 import { Readable } from "node:stream";
 import { config, limits, Problem, problem } from "./config";
+import { notifyMediaExport } from "./telegram";
 import { storeStream } from "./storage";
 import { downloadTrack } from "./retrieve";
 import { localMedia } from "./providers/local";
@@ -407,6 +408,11 @@ export class Engine {
         size: out.size,
         ratio: 1,
       });
+      void notifyMediaExport(j).catch(() =>
+        console.warn(
+          JSON.stringify({ event: "telegram_delivery_failed", job: j.view.id }),
+        ),
+      );
     } catch (err) {
       const e = problem(s.aborted ? s.reason : err);
       this.finish(j, {

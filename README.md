@@ -20,7 +20,7 @@ The image includes Node.js, Python, yt-dlp, FFmpeg and FFprobe. The application 
 
 | Source | Eligibility |
 | --- | --- |
-| YouTube | Single videos, Shorts, mobile, music and short URLs normalize to a video ID. Playlist/radio tracking parameters are discarded. Set the comma-separated `AUTHORIZED_YOUTUBE_IDS` only for videos whose rights holder **and platform** permit this server-side use. The operator maintains this list. The service also requires accessible, unprotected media tracks within its limits. Other public videos can return an oEmbed preview and the reason export is unavailable. |
+| YouTube | Single videos, Shorts, mobile, music and short URLs normalize to a video ID. Playlist/radio tracking parameters are discarded. Export requires accessible, unprotected media tracks within server limits. Only export media you are authorized to process. Other public videos can return an oEmbed preview and the reason export is unavailable. |
 | TikTok | Accepts canonical posts and supported short URLs. The post must explicitly enable downloads and supply a downloadable publisher rendition. Playback-only renditions cannot qualify. The extractor and public page can differ by post and hosting region. |
 | Approved media URLs | Accepts public HTTPS files on exact hostnames in `DIRECT_MEDIA_HOSTS`. Provide only hosts and media authorized for this use. Linkora retrieves and probes the actual file on analysis. Try the [W3C-hosted Big Buck Bunny trailer](https://media.w3.org/2010/05/bunny/trailer.mp4). |
 | Local media | Upload through the file workflow to analyze streams, dimensions and duration. No external media provider is involved. |
@@ -62,7 +62,7 @@ The workspace also supports trimming, compression, resizing, frame export, audio
 
 ## Configuration
 
-See [.env.example](.env.example) for every default. Set values in the server environment. Compose passes through `AUTHORIZED_YOUTUBE_IDS`; add other overrides to the Compose service environment when needed.
+See [.env.example](.env.example) for every default. Set values in the server environment. Add overrides to the Compose service environment when needed.
 
 | Variables | Defaults or meaning |
 | --- | --- |
@@ -73,9 +73,14 @@ See [.env.example](.env.example) for every default. Set values in the server env
 | `JOB_TIMEOUT_SECONDS`, `FILE_TTL_SECONDS`, `CLEANUP_INTERVAL_SECONDS` | 300 seconds per job, 900 seconds retention, 60 seconds between sweeps |
 | `ENABLE_LOCAL_UPLOADS`, `ENABLE_HEAVY_TRANSCODING` | Enabled; disable heavy conversion to conserve CPU |
 | `ENABLE_DIRECT_URL_EXPORT`, `DIRECT_MEDIA_HOSTS` | Enabled for media.w3.org and interactive-examples.mdn.mozilla.net by default |
-| `AUTHORIZED_YOUTUBE_IDS` | Empty by default; operator-verified IDs only |
 | `ENABLE_BATCH_EXPORT`, `MAX_BATCH_SIZE` | Disabled, maximum 3 by default |
 | `PYTHON_BIN`, `FFMPEG_BIN`, `FFPROBE_BIN` | Optional explicit executable paths |
+
+## Telegram export alerts
+
+Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in the server environment. Docker Compose reads these values from the local Git-ignored .env file. On Render, set both in the service environment. Give the bot permission to post in the destination group.
+
+When a YouTube or TikTok video or audio export completes, Linkora sends one group message with the source link, title, creator, tool, output format, actual file size, and request and completion times in Phnom Penh. Configure this only for groups authorized to receive those details. A delivery error is logged independently of the export.
 
 ## API
 
@@ -111,14 +116,14 @@ The browser suite verifies real MP3 and MP4 downloads from the approved W3C link
 
 ### Verified on macOS and in Linux Docker
 
-The Docker browser test normalized a user-authorized YouTube radio URL to its single video, received progress events, downloaded both outputs and inspected them with FFprobe. The 1080p MP4 contained H.264 video and AAC audio (207.262 seconds, 92,022,404 bytes). The 192 kbps MP3 was 207.308 seconds and 4,976,132 bytes. A native worker also produced a validated 640×360 MP4 from the same source. This permission was scoped to the local test configuration. An earlier best-quality run hit the five-minute job deadline, which led to preferring compatible tracks and reusing them during merging.
+The Docker browser test normalized a user-authorized YouTube radio URL to its single video, received progress events, downloaded both outputs and inspected them with FFprobe. The 1080p MP4 contained H.264 video and AAC audio (207.262 seconds, 92,022,404 bytes). The 192 kbps MP3 was 207.308 seconds and 4,976,132 bytes. A native worker also produced a validated 640×360 MP4 from the same source. An earlier best-quality run hit the five-minute job deadline, which led to preferring compatible tracks and reusing them during merging.
 
 The native and Docker HTTP tests covered session isolation, reconnecting progress streams, cancellation, retry and expiry using a shortened retention period. The default remains 900 seconds. Browser checks covered four primary screens and 14 secondary routes in both themes. The accessibility scan found no automated WCAG A/AA violations on Home, Tools, History or Settings at the tested phone and desktop sizes. Live Render behavior and a positive TikTok export remain unverified.
 
 ## Render
 
 1. Push the repository, including the lockfile and render.yaml, to a GitHub repository accessible to your Render account.
-2. Create a Blueprint in Render, select the repository and apply its Docker web service configuration on main.
+2. Create a Blueprint in Render, select the repository and apply its Docker web service configuration on main. Enter the Telegram settings in the Render dashboard to enable alerts. Use a fresh bot token issued by BotFather.
 3. Keep one instance, configure any operator-approved sources and set SITE_URL to the public HTTPS origin. Render provides PORT. No persistent disk is needed.
 4. Check /api/v1/health and run an authorized MP4 and MP3 download through the deployed origin. Confirm progress and file validity from that region before advertising platform-specific support.
 

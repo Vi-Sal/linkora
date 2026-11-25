@@ -167,9 +167,6 @@ export async function analyzeUrl(
       ),
     );
   const provider = platform === "YouTube" ? youtube : tiktok;
-  const restriction = provider.authorization(url);
-  if (restriction)
-    return restricted(new Problem("EXPORT_NOT_PERMITTED", restriction));
   let d: z.infer<typeof info>;
   try {
     d = info.parse(

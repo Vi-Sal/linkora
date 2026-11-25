@@ -145,8 +145,6 @@ const km: Record<string, string> = {
   Availability: "ភាពអាចប្រើបាន",
   "Private, protected, restricted, or unavailable media may be limited to a preview. Export limits depend on server capacity.":
     "មេឌៀឯកជន ឬដែលមានការការពារ អាចមើលជាមុនបានប៉ុណ្ណោះ។ ដែនកំណត់នាំចេញអាស្រ័យលើសមត្ថភាពម៉ាស៊ីនមេ។",
-  "YouTube supplies a preview. A permitted download for this video has not been verified.":
-    "YouTube ផ្ដល់ការមើលជាមុន។ សិទ្ធិទាញយកវីដេអូនេះមិនទាន់បានផ្ទៀងផ្ទាត់។",
   "TikTok did not supply an eligible publisher download rendition.":
     "TikTok មិនបានផ្ដល់ទម្រង់ទាញយកដែលម្ចាស់អនុញ្ញាតទេ។",
   "The provider restricted access from this server.":

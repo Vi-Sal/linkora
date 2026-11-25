@@ -14,3 +14,7 @@ services:
         value: "false"
       - key: DIRECT_MEDIA_HOSTS
         value: media.w3.org,interactive-examples.mdn.mozilla.net
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
